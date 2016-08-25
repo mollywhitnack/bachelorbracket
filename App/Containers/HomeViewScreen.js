@@ -146,7 +146,7 @@ class HomeScreen extends React.Component {
     return (
       <View style={styles.mainContainer}>
       <View>
-          <RoundedButton text='New Brackets' onPress={this.props.newBracket} />
+          <RoundedButton text='New Bracket' onPress={this.props.newBracket} />
         </View>
         <View>
           <RoundedButton text='My Brackets' onPress={this.props.listviewGridExample} />

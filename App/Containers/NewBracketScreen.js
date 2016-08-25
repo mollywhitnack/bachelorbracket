@@ -19,13 +19,17 @@ class NewBracketScreen extends React.Component {
 
   constructor (props) {
     super(props)
-    this.state = {}
+    this.state = {
+      players: []
+    }
   }
 
   static propTypes = {
     loggedIn: PropTypes.bool,
     dispatch: PropTypes.func,
     temperature: PropTypes.number,
+    player: PropTypes.string,
+    players: PropTypes.array,
     city: PropTypes.string,
     login: PropTypes.func,
     logout: PropTypes.func,
@@ -55,8 +59,12 @@ class NewBracketScreen extends React.Component {
   }
 
   // fires when tap send
-  handlePressSend = () => {
-    this.props.requestTemperature('Toronto')
+  addPlayer = () => {
+    //this.props.requestTemperature('Toronto')
+    console.log('this.state:', this.state)
+    this.setState({players: this.state.players.concat([this.state.player])});
+    this.setState({player:''})
+
   }
 
   // fires when tap star
@@ -148,20 +156,21 @@ class NewBracketScreen extends React.Component {
         <TextInput
         style={{height: 40, borderColor: 'gray', borderWidth: 1}}
         placeholder = "Bracket Name"
-        onChangeText={(text) => this.setState({text})}
-        value={this.state.text}
+        onChangeText={(BracketName) => this.setState({BracketName})}
+        value={this.state.BracketName}
         />
         <Text>Add Friends</Text>
         <TextInput
         style={{height: 40, borderColor: 'gray', borderWidth: 1}}
         placeholder = "Player"
-        onChangeText={(text) => this.setState({text})}
-        value={this.state.text}
+        onChangeText={(player) => this.setState({player})}
+        value={this.state.player}
         />
-        <TouchableHighlight onPress={this.handlePressRocket}>
-            <Text>Add</Text>
-        </TouchableHighlight>
 
+        <TouchableOpacity onPress={this.addPlayer}>
+            <Icon name='plus' size={Metrics.icons.medium} color={Colors.error} />
+          </TouchableOpacity>
+        <Text>{this.state.players}</Text>
         <RoundedButton text='Submit Bracket' onPress={this.props.weekOne} />
         </ScrollView>
       </View>

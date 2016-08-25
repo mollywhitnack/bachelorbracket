@@ -14,7 +14,6 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     margin: Metrics.baseMargin,
-    backgroundColor: Colors.fire,
     borderRadius: Metrics.smallMargin
   },
   boldLabel: {
@@ -35,7 +34,7 @@ export default StyleSheet.create({
     flexWrap: 'wrap'
   },
   image:{
-   resizeMode: 'cover',
+   resizeMode: 'contain',
    width: null,
    height: 100,
    flex:1

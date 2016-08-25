@@ -15,11 +15,6 @@ class WeekOneScreen extends React.Component {
   constructor (props) {
     super(props)
 
-
-
-
-
-
     /* ***********************************************************
     * STEP 1
     * This is an array of objects with the properties you desire
@@ -116,7 +111,6 @@ class WeekOneScreen extends React.Component {
       <View>
         <Text>Week 1</Text>
         <Text>Select 15</Text>
-      <RoundedButton text='Bracket' onPress={this.props.bracket} />
         <ScrollView >
       <View style={styles.container}>
         <ListView
@@ -126,6 +120,7 @@ class WeekOneScreen extends React.Component {
         />
       </View>
       </ScrollView>
+      <RoundedButton text='Bracket/Week 2 ->' onPress={this.props.bracket} />
       </View>
     )
   }

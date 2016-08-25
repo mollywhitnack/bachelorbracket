@@ -3,6 +3,10 @@ import { Colors, Fonts, Metrics, ApplicationStyles } from '../../Themes/'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
+  newBracketContainer:{
+    marginTop: 30,
+    padding: 10
+  },
   loginBox: {
     padding: Metrics.doubleBaseMargin
   },
