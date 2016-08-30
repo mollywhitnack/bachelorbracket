@@ -14,6 +14,7 @@ import I18n from '../I18n/I18n.js'
 
 // Styles
 import styles from './Styles/HomeScreenStyle'
+import * as Firebase from 'firebase';
 
 class HomeScreen extends React.Component {
 
@@ -143,8 +144,10 @@ class HomeScreen extends React.Component {
   }
 
   render () {
+    console.log('user in home:', Firebase.auth().currentUser)
     return (
       <View style={styles.mainContainer}>
+      <Text>{Firebase.auth().currentUser.email}</Text>
       <View>
           <RoundedButton text='New Bracket' onPress={this.props.newBracket} />
         </View>

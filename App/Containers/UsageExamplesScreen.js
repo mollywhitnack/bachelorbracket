@@ -10,7 +10,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import * as Animatable from 'react-native-animatable'
 // Enable when you have configured Xcode
 // import PushNotification from 'react-native-push-notification'
-import I18n from '../I18n/I18n.js'
+//import I18n from '../I18n/I18n.js'
 
 // Styles
 import styles from './Styles/UsageExamplesScreenStyle'
@@ -66,7 +66,8 @@ class UsageExamplesScreen extends React.Component {
   renderLoginButton () {
     return (
       <RoundedButton onPress={this.props.login}>
-        {I18n.t('signIn')}
+      <Text>Sign in</Text>
+       {/* {I18n.t('signIn')}*/}
       </RoundedButton>
     )
   }
@@ -74,7 +75,7 @@ class UsageExamplesScreen extends React.Component {
   renderLogoutButton () {
     return (
       <RoundedButton onPress={this.props.logout}>
-        {I18n.t('logOut')}
+        <Text>Log Out</Text>{/*{I18n.t('logOut')}*/}
       </RoundedButton>
     )
   }
@@ -91,7 +92,7 @@ class UsageExamplesScreen extends React.Component {
     const { loggedIn, temperature, city } = this.props
     return (
       <View>
-        {this.renderHeader(I18n.t('loginLogoutExampleTitle'))}
+        {/*{this.renderHeader(I18n.t('loginLogoutExampleTitle'))}
         {loggedIn ? this.renderLogoutButton() : this.renderLoginButton()}
         {this.renderHeader('I18n Locale')}
         <View style={styles.groupContainer}>
@@ -134,7 +135,7 @@ class UsageExamplesScreen extends React.Component {
         </View>
         <View>
           <RoundedButton text='Listview Grid' onPress={this.props.listviewGridExample} />
-        </View>
+        </View>*/}
       </View>
     )
   }

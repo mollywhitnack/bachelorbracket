@@ -11,16 +11,16 @@ import * as Animatable from 'react-native-animatable'
 // Enable when you have configured Xcode
 // import PushNotification from 'react-native-push-notification'
 import I18n from '../I18n/I18n.js'
-
+import * as Firebase from 'firebase';
+import uuid from 'uuid'
 // Styles
 import styles from './Styles/NewBracketScreenStyle'
-
 class NewBracketScreen extends React.Component {
 
   constructor (props) {
     super(props)
     this.state = {
-      players: []
+      inviteEmails: []
     }
   }
 
@@ -29,7 +29,7 @@ class NewBracketScreen extends React.Component {
     dispatch: PropTypes.func,
     temperature: PropTypes.number,
     player: PropTypes.string,
-    players: PropTypes.array,
+    inviteEmails: PropTypes.array,
     city: PropTypes.string,
     login: PropTypes.func,
     logout: PropTypes.func,
@@ -44,12 +44,6 @@ class NewBracketScreen extends React.Component {
     // Request push premissions only if the user has logged in.
     const { loggedIn } = nextProps
     if (loggedIn) {
-      /*
-      * If you have turned on Push in Xcode, http://i.imgur.com/qFDRhQr.png
-      * uncomment this code below and import at top
-      */
-      // if (__DEV__) console.log('Requesting push notification permissions.')
-      // PushNotification.requestPermissions()
     }
   }
 
@@ -62,8 +56,9 @@ class NewBracketScreen extends React.Component {
   addPlayer = () => {
     //this.props.requestTemperature('Toronto')
     console.log('this.state:', this.state)
-    this.setState({players: this.state.players.concat([this.state.player])});
-    this.setState({player:''})
+    this.setState({inviteEmails: this.state.inviteEmails.concat([this.state.player])});
+    //might be wrong? ''
+    this.setState({player: '' })
 
   }
 
@@ -96,58 +91,6 @@ class NewBracketScreen extends React.Component {
     )
   }
 
-  renderUsageExamples () {
-    const { loggedIn, temperature, city } = this.props
-    return (
-      <View>
-        {this.renderHeader(I18n.t('loginLogoutExampleTitle'))}
-        {loggedIn ? this.renderLogoutButton() : this.renderLoginButton()}
-        {this.renderHeader('I18n Locale')}
-        <View style={styles.groupContainer}>
-          <Text style={styles.locale}>{I18n.locale}</Text>
-        </View>
-        {this.renderHeader(I18n.t('api') + `: ${city}`)}
-        <View style={[styles.groupContainer, {height: 50}]}>
-          <Text style={styles.temperature}>{temperature && `${temperature} ${I18n.t('tempIndicator')}`}</Text>
-        </View>
-        {this.renderHeader(I18n.t('rnVectorIcons'))}
-        <View style={styles.groupContainer}>
-          <TouchableOpacity onPress={this.handlePressRocket}>
-            <Icon name='rocket' size={Metrics.icons.medium} color={Colors.ember} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.handlePressSend}>
-            <Icon name='send' size={Metrics.icons.medium} color={Colors.error} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.handlePressStar}>
-            <Icon name='star' size={Metrics.icons.medium} color={Colors.snow} />
-          </TouchableOpacity>
-          <Icon name='trophy' size={Metrics.icons.medium} color={Colors.error} />
-          <Icon name='warning' size={Metrics.icons.medium} color={Colors.ember} />
-        </View>
-        <View style={styles.groupContainer}>
-          <Icon.Button name='facebook' style={styles.facebookButton} backgroundColor={Colors.facebook} onPress={() => window.alert('Facebook')}>
-            {I18n.t('loginWithFacebook')}
-          </Icon.Button>
-        </View>
-        {this.renderHeader(I18n.t('rnAnimatable'))}
-        <View style={styles.groupContainer}>
-          <Animatable.Text animation='fadeIn' iterationCount='infinite' direction='alternate' style={styles.subtitle}>{I18n.t('rnAnimatable')}</Animatable.Text>
-          <Animatable.Image animation='pulse' iterationCount='infinite' source={Images.logo} />
-          <Animatable.View animation='jello' iterationCount='infinite' >
-            <Icon name='cab' size={Metrics.icons.medium} color={Colors.snow} />
-          </Animatable.View>
-        </View>
-        {this.renderHeader(I18n.t('igniteGenerated'))}
-        <View>
-          <RoundedButton text='Listview' onPress={this.props.listviewExample} />
-        </View>
-        <View>
-          <RoundedButton text='Listview Grid' onPress={this.props.listviewGridExample} />
-        </View>
-      </View>
-    )
-  }
-
   render () {
     return (
       <View style={styles.mainContainer}>
@@ -159,7 +102,7 @@ class NewBracketScreen extends React.Component {
         onChangeText={(BracketName) => this.setState({BracketName})}
         value={this.state.BracketName}
         />
-        <Text>Add Friends</Text>
+        <Text>Invite Friends to bracket by Email</Text>
         <TextInput
         style={{height: 40, borderColor: 'gray', borderWidth: 1}}
         placeholder = "Player"
@@ -170,13 +113,50 @@ class NewBracketScreen extends React.Component {
         <TouchableOpacity onPress={this.addPlayer}>
             <Icon name='plus' size={Metrics.icons.medium} color={Colors.error} />
           </TouchableOpacity>
-        <Text>{this.state.players}</Text>
-        <RoundedButton text='Submit Bracket' onPress={this.props.weekOne} />
+        <Text>{this.state.inviteEmails}</Text>
+        <RoundedButton text='Submit Bracket' onPress={this.writeUserData.bind(this)}/>
         </ScrollView>
       </View>
     )
   }
+
+  writeUserData() {
+
+    let uid  = Firebase.auth().currentUser.v
+
+    console.log('uid:', uid);
+    console.log('new bracket', newBracket)
+
+    var newBracketKey = firebase.database().ref().child('brackets').push().key;
+    //var newUserBracketKey = firebase.database().ref().child('user-brackets').push().key;
+
+    let newName = this.state.BracketName;
+    let newInvites = this.state.inviteEmails;
+      
+    let newUserBracket = {
+        id: newBracketKey,
+        name: newName,
+        inviteEmails: newInvites,
+    }
+
+    let newBracket = {
+      name: this.state.BracketName,
+      inviteEmails: this.state.inviteEmails,
+    }
+
+     //let playerBrackets = [];
+     //let playerBrackets = []
+     //playerBrackets.push(newUserBracket)
+     //console.log('newBracketKey:', newUserBracket);
+      var updates = {};
+      updates['/brackets/' + newBracketKey] = newBracket;
+      firebase.database().ref().child('user-brackets').push(newUserBracket)
+      //updates['/user-brackets/' + uid ] = newUserBracket;
+      console.log('ref updates:', firebase.database().ref().update(updates))
+  }
+
 }
+
 
 const mapStateToProps = (state) => {
   return {

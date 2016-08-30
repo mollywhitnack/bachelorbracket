@@ -18,6 +18,13 @@ import DeviceInfoScreen from '../Containers/DeviceInfoScreen'
 import HomeScreen from '../Containers/HomeViewScreen'
 import NewBracketScreen from '../Containers/NewBracketScreen'
 import WeekOneScreen from '../Containers/WeekOneScreen'
+import WeekTwoScreen from '../Containers/WeekTwoScreen'
+import WeekThreeScreen from '../Containers/WeekThreeScreen'
+import WeekFourScreen from '../Containers/WeekFourScreen'
+import WeekFiveScreen from '../Containers/WeekFiveScreen'
+import WeekSixScreen from '../Containers/WeekSixScreen'
+import WeekSevenScreen from '../Containers/WeekSevenScreen'
+import WeekEightScreen from '../Containers/WeekEightScreen'
 import BracketScreen from '../Containers/BracketScreen'
 
 /* **************************
@@ -37,6 +44,13 @@ class NavigationRouter extends Component {
             <Scene key='newBracket' component={NewBracketScreen} title='NewBracket' />
             <Scene key='bracket' component={BracketScreen} title='Bracket' />
             <Scene key='weekOne' component={WeekOneScreen} title='WeekOne' />
+            <Scene key='weekTwo' component={WeekTwoScreen} title='WeekTwo' />
+            <Scene key='weekThree' component={WeekThreeScreen} title='WeekThree' />
+            <Scene key='weekFour' component={WeekFourScreen} title='WeekFour' />
+            <Scene key='weekFive' component={WeekFiveScreen} title='WeekFive' />
+            <Scene key='weekSix' component={WeekSixScreen} title='WeekSix' />
+            <Scene key='weekSeven' component={WeekSevenScreen} title='WeekSeven' />
+            <Scene key='weekEight' component={WeekEightScreen} title='WeekEight' />
             <Scene key='login' component={LoginScreen} title='Login' hideNavBar />
             <Scene key='listviewExample' component={ListviewExample} title='Listview Example' />
             <Scene key='listviewGridExample' component={ListviewGridExample} title='Listview Grid' />

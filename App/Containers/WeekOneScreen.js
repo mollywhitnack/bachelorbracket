@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import { View, ScrollView, Text, TouchableOpacity, Image, ListView,TextInput ,TouchableHighlight} from 'react-native'
 import { connect } from 'react-redux'
+import { Images, Colors } from '../Themes'
 import RoundedButton from '../Components/RoundedButton'
 import { Actions as NavigationActions } from 'react-native-router-flux'
 
@@ -15,45 +16,38 @@ class WeekOneScreen extends React.Component {
   constructor (props) {
     super(props)
 
-    /* ***********************************************************
-    * STEP 1
-    * This is an array of objects with the properties you desire
-    * Usually this should come from Redux mapStateToProps
-    *************************************************************/
+    this.state = {
+      weekOne: []
+    }
+
+    this._renderRow.bind(this);
+
     const dataObjects = [
-      {title: 'First Title', description: 'First Description', image: 'http://cdn1.edgedatg.com/aws/abc/TheBachelorette/person/person-person_5fb3626e-febf-4d42-8eda-2d22ab4a72dd_943x943_source-330x330-Q90_1461705442423.jpg'},
-      {title: 'Second Title', description: 'Second Description'},
-      {title: 'Third Title', description: 'Third Description'},
-      {title: 'Fourth Title', description: 'Fourth Description'},
-      {title: 'Fifth Title', description: 'Fifth Description'},
-      {title: 'Sixth Title', description: 'Sixth Description'},
-      {title: 'Seventh Title', description: 'Seventh Description'},
-      {title: '8 Title', description: '8 Description'},
-      {title: '9 Title', description: '9 Description'},
-      {title: '10 Title', description: '10 Description'},
-      {title: '11 Title', description: '11 Description'},
-      {title: '12 Title', description: '12 Description'},
-      {title: '13 Title', description: '13 Description'},
-      {title: '14 Title', description: '14 Description'},
-      {title: '15 Title', description: '15 Description'},
-      {title: '16 Title', description: '16 Description'},
-      {title: '17 Title', description: '17 Description'},
-      {title: '18 Title', description: '18 Description'},
-      {title: '19 Title', description: '19 Description'},
-      {title: '20 Title', description: '20 Description'},
+      {title: '1', added : false , description: 'First Description', image: 'http://cdn1.edgedatg.com/aws/v2/abc/TheBachelorette/person/1643372/f57dda0053fbea301812a5d515fd3a16/330x330-Q90_f57dda0053fbea301812a5d515fd3a16.jpg'},
+      {title: '2', added : false, description: 'Second Description'},
+      {title: '3', added : false ,description: 'Third Description'},
+      {title: '4', added : false, description: 'Fourth Description'},
+      {title: '5', added : false, description: 'Fifth Description'},
+      {title: '6', added : false, description: 'Sixth Description'},
+      {title: '7', added : false, description: 'Seventh Description'},
+      {title: '8', added : false, description: '8 Description'},
+      {title: '9', added : false, description: '9 Description'},
+      {title: '10', added : false, description: '10 Description'},
+      {title: '11', added : false, description: '11 Description'},
+      {title: '12', added : false, description: '12 Description'},
+      {title: '13', added : false, description: '13 Description'},
+      {title: '14', added : false, description: '14 Description'},
+      {title: '15', added : false, description: '15 Description'},
+      {title: '16', added : false, description: '16 Description'},
+      {title: '17', added : false, description: '17 Description'},
+      {title: '18', added : false, description: '18 Description'},
+      {title: '19', added : false, description: '19 Description'},
+      {title: '20', added : false, description: '20 Description'},
     ]
 
-    /* ***********************************************************
-    * STEP 2
-    * Teach datasource how to detect if rows are different
-    * Make this function fast!  Perhaps something like:
-    *   (r1, r2) => r1.id !== r2.id}
-    *************************************************************/
     const rowHasChanged = (r1, r2) => r1 !== r2
-
     // DataSource configured
     const ds = new ListView.DataSource({rowHasChanged})
-
     // Datasource is always in state
     this.state = {
       dataSource: ds.cloneWithRows(dataObjects)
@@ -61,75 +55,95 @@ class WeekOneScreen extends React.Component {
   }
 
   static propTypes = {
-    bracket: PropTypes.func,
+    weekTwo: PropTypes.func,
+    weekOne: PropTypes.array,
+    selectContestant: PropTypes.func,
   }
 
-  /* ***********************************************************
-  * STEP 3
-  * `_renderRow` function -How each cell/row should be rendered
-  * It's our best practice to place a single component here:
-  *
-  * e.g.
-    return <MyCustomCell title={rowData.title} description={rowData.description} />
-  *************************************************************/
+//cahnged title
+
+  /*() => {
+          //this._pressRow(rowID);
+          //highlightRow(sectionID, rowID);
+          console.log('clicked, ', rowData)
+          rowData.added = !rowData.added;
+          //console.log('this.state:', this.state)//.weekOne)
+          //console.log('this:', this.props)//.weekOne)
+          //this.setState({weekOne: this.state.weekOne.concat([rowData])});
+         }}>*/
+
+  _onHideUnderlay(){
+    console.log('hide: ', this);
+  }
+
   _renderRow (rowData) {
+    let highlight  = styles.none
     return (
       <View style={styles.row}>
-        <Text style={styles.boldLabel}>{rowData.title}</Text>
-        <Text style={styles.label}>{rowData.description}</Text>
-        <Image style={styles.image}  source={{uri: 'http://cdn1.edgedatg.com/aws/abc/TheBachelorette/person/person-person_5fb3626e-febf-4d42-8eda-2d22ab4a72dd_943x943_source-330x330-Q90_1461705442423.jpg' }} /> 
+        <TouchableOpacity onPress={() => {
+          //this._pressRow(rowID);
+          //highlightRow(sectionID, rowID);
+          console.log('clicked, ', rowData)
+          rowData.added = !rowData.added;
+
+          if(rowData.added === true){
+            highlight = styles.pink;
+          }
+          //console.log('this.state:', this.state)//.weekOne)
+          //console.log('this:', this.props)//.weekOne)
+          //this.setState({weekOne: this.state.weekOne.concat([rowData])});
+         }}>
+
+          <View style={highlight} >
+            <Text style={styles.boldLabel}>{rowData.title}</Text>
+            <Image style={styles.image}  source={Images.jojo} /> 
+          </View>
+        </TouchableOpacity>
       </View>
     )
   }
 
-  /* ***********************************************************
-  * STEP 4
-  * If your datasource is driven by Redux, you'll need to
-  * reset it when new data arrives.
-  * DO NOT! place `cloneWithRows` inside of render, since render
-  * is called very often, and should remain fast!  Just replace
-  * state's datasource on newProps.
-  *
-  * e.g.
-    componentWillReceiveProps (newProps) {
-      if (newProps.someData) {
-        this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(newProps.someData)
-        })
-      }
-    }
-  *************************************************************/
+  selectContestant(){
+    //this.props.requestTemperature('Toronto')
+    console.log('clicked:');
+    console.log('this:', this)
+  }
 
-  // Used for friendly AlertMessage
-  // returns true if the dataSource is empty
   _noRowData () {
     return this.state.dataSource.getRowCount() === 0
   }
 
   render () {
+    console.log('this.state.weekone:', this.state.weekOne)
     return (
-      <View>
-        <Text>Week 1</Text>
-        <Text>Select 15</Text>
-        <ScrollView >
       <View style={styles.container}>
-        <ListView
-          contentContainerStyle={styles.listContent}
-          dataSource={this.state.dataSource}
-          renderRow={this._renderRow}
-        />
-      </View>
-      </ScrollView>
-      <RoundedButton text='Bracket/Week 2 ->' onPress={this.props.bracket} />
+        <View style={styles.header}>
+          <Text style={styles.title}>Week 1</Text>
+          <Text  style={styles.subtitle}>Select 15</Text>
+        </View>
+        <ScrollView style={styles.scroll}>
+          <ListView
+            contentContainerStyle={styles.listContent}
+            dataSource={this.state.dataSource}
+            renderRow={this._renderRow}
+          />
+        </ScrollView>
+        <RoundedButton text='Week 2 ->' onPress={this.props.weekTwo} />
       </View>
     )
   }
 }
 
+WeekOneScreen.propTypes = {
+  text: PropTypes.string.isRequired,
+};
+
+
+
 
 const mapStateToProps = (state) => {
   return {
-    bracket: NavigationActions.bracket
+    weekTwo: NavigationActions.weekTwo
     // ...redux state to props here
   }
 }

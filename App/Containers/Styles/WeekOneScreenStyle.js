@@ -5,16 +5,22 @@ export default StyleSheet.create({
   ...ApplicationStyles.screen,
   container: {
     flex: 1,
-    marginTop: Metrics.navBarHeight,
+    marginTop: 20,
     backgroundColor: Colors.background
   },
+  header:{
+    marginTop: 50,
+    backgroundColor: 'red'
+  },
+  scroll:{
+    marginTop: 20,
+  },
   row: {
-    width: 100,
-    height: 100,
+    width: 85,
+    height: 85,
     justifyContent: 'center',
     alignItems: 'center',
-    margin: Metrics.baseMargin,
-    borderRadius: Metrics.smallMargin
+    margin: 10,
   },
   boldLabel: {
     fontWeight: 'bold',
@@ -35,8 +41,20 @@ export default StyleSheet.create({
   },
   image:{
    resizeMode: 'contain',
-   width: null,
-   height: 100,
-   flex:1
+   height: 75,
+   width: 80,
+   padding: 10
+  },
+  pink:{
+    backgroundColor: 'pink'
+
+  },
+  none:{
+    backgroundColor: 'white'
+  },
+
+  overlay: {
+    backgroundColor:'rgba(80,94,104,0.7)',
   }
+
 })

@@ -8,6 +8,7 @@ const images = {
   roses: require('../Images/roses.jpg'),
   bachelorette: require('../Images/bacheloretteTitle.png'),
   bachelor: require('../Images/bachelorTitle.png'),
+  jojo: require('../Images/jojo.jpg'),
 }
 
 export default images
