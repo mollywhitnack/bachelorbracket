@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, ListView } from 'react-native'
+import { View, Text, ListView, RecyclerViewBackedScrollView } from 'react-native'
 import { connect } from 'react-redux'
 
 // For empty lists
@@ -12,33 +12,29 @@ import * as firebase from 'firebase';
 class ListviewGridExample extends React.Component {
 
   constructor (props) {
+    console.log('1. in constructor')
     super(props)
     let uid  = firebase.auth().currentUser.v
 
-    var data = firebase.database().ref('user-brackets/' + uid );
+    var data = firebase.database().ref(`${uid}`);
     data.on('value', function(snapshot) {
-    //  updateStarCount(postElement, snapshot.val());
-      console.log('snapshot: ', snapshot)
-      console.log('snapshot.val(): ', snapshot.val())
-
+      console.log('2. getting brackets');
       makeBracketElements(snapshot.val())
     });
 
     const dataObjects = []
 
     function makeBracketElements(brackets){
-      console.log('brackets:', brackets)
-        for(let i =0; i< brackets.length; i++){
+      console.log('3. brackets:', brackets)
+        for(var bracket in brackets){
           let obj = {
-            title: brackets[i].name,
-            players: brackets[i].inviteEmails
+            title: brackets[bracket].name,
+            players: brackets[bracket].inviteEmails
           }
-          console.log('obj:', obj);
           dataObjects.push(obj);
         }
         console.log('dataObjects:', dataObjects);
     }
-
 
     const rowHasChanged = (r1, r2) => r1 !== r2
 
@@ -52,8 +48,8 @@ class ListviewGridExample extends React.Component {
   }
 
 
-
   _renderRow (rowData) {
+    console.log('4. render rows');
     return (
       <View style={styles.row}>
         <Text style={styles.boldLabel}>{rowData.title}</Text>
@@ -64,17 +60,19 @@ class ListviewGridExample extends React.Component {
 
 
   _noRowData () {
+    console.log('5 .no row data');
     return this.state.dataSource.getRowCount() === 0
   }
 
   render () {
+   console.log('6.render');
     return (
       <View style={styles.container}>
         <AlertMessage title='Nothing to See Here, Move Along' show={this._noRowData()} />
         <ListView
-          contentContainerStyle={styles.listContent}
           dataSource={this.state.dataSource}
           renderRow={this._renderRow}
+          
         />
       </View>
     )

@@ -144,15 +144,22 @@ class NewBracketScreen extends React.Component {
       inviteEmails: this.state.inviteEmails,
     }
 
-     //let playerBrackets = [];
-     //let playerBrackets = []
-     //playerBrackets.push(newUserBracket)
-     //console.log('newBracketKey:', newUserBracket);
       var updates = {};
       updates['/brackets/' + newBracketKey] = newBracket;
-      firebase.database().ref().child('user-brackets').push(newUserBracket)
+      //var brackets = [];
+      /*firebase.database().ref('brackets/' + currbracket).child(`${uid}`).set({
+        weekOne: this.state.weekOne
+      })*/
+
+      firebase.database().ref(`${uid}/${newBracketKey}`).set({
+        name: newName,
+        inviteEmails: newInvites,
+      })
+
       //updates['/user-brackets/' + uid ] = newUserBracket;
       console.log('ref updates:', firebase.database().ref().update(updates))
+      
+      this.props.weekOne();
   }
 
 }

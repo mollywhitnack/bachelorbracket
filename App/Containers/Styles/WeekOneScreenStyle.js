@@ -16,11 +16,11 @@ export default StyleSheet.create({
     marginTop: 20,
   },
   row: {
-    width: 85,
-    height: 85,
+    width: 120,
+    height: 160,
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 10,
+    margin: 5,
   },
   boldLabel: {
     fontWeight: 'bold',
@@ -41,16 +41,15 @@ export default StyleSheet.create({
   },
   image:{
    resizeMode: 'contain',
-   height: 75,
-   width: 80,
-   padding: 10
+   width: 100,
+   height: 110,
   },
   pink:{
     backgroundColor: 'pink'
 
   },
   none:{
-    backgroundColor: 'white'
+    backgroundColor: 'black'
   },
 
   overlay: {
