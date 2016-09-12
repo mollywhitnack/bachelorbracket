@@ -1,171 +1,113 @@
 import React, {PropTypes} from 'react'
-import { ScrollView, Text, Image, View, TextInput, TouchableHighlight } from 'react-native'
-import { Images, Colors } from '../Themes'
+import { Text, View, Alert, Image, TextInput,TouchableOpacity,  TouchableHighlight } from 'react-native'
 import { connect } from 'react-redux'
-import RoundedButton from '../Components/RoundedButton'
 import { Actions as NavigationActions } from 'react-native-router-flux'
-//var ResponsiveImage = require('react-native-responsive-image');
-import Icon from 'react-native-vector-icons/FontAwesome'
-//import I18n from '../I18n/I18n.js'
+import * as firebase from 'firebase';
+import { Images, Colors } from '../Themes'
+import { db } from '../Config/firebaseConfig.js'
+
+//import { Container, Header, Button, Title, Content, Input, InputGroup, Icon } from 'native-base'
+// import karmaTheme from '../../node_modules/native-base/Components/Themes/light'
+//import karmaTheme from '../NativeBase/karmaTheme'
+
 
 // Styles
 import styles from './Styles/PresentationScreenStyle'
-import * as Firebase from 'firebase';
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyDO5Cdnf7AcB1YwqZ8pdeUVP8lYNUEVEgc",
-    authDomain: "bachelorbracket-5b74a.firebaseapp.com",
-    databaseURL: "https://bachelorbracket-5b74a.firebaseio.com",
-    storageBucket: "bachelorbracket-5b74a.appspot.com",
-  };  
-
-  var firebaseApp = Firebase.initializeApp(config);
-  var rootRef = Firebase.database().ref();
-  /*function authDataCallback(authData) {
-  if (authData) {
-    console.log("User " + authData.uid + " is logged in with " + authData.provider);
-  } else {
-    console.log("\nUser is logged out");
-  }
-} 
-firebaseApp.auth().onAuthStateChanged(user =>{
-  if(!user){
-    console.log('loged out:', user);
-  }
-  else{
-    console.log('loged in as: ', user);
-  }
-});*/
 
 class PresentationScreen extends React.Component {
 
   static propTypes = {
-    componentExamples: PropTypes.func,
-    usageExamples: PropTypes.func,
     home: PropTypes.func,
-    apiTesting: PropTypes.func,
-    theme: PropTypes.func,
-    deviceInfo: PropTypes.func,
-    //newBracket: PropTypes.func
+  }
+
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      email: '',
+      password: ''
+    }
+
+    this.changeEmail = this.changeEmail.bind(this)
+    this.changePassword = this.changePassword.bind(this)
+    this.login = this.login.bind(this)
+    this.props.home();
+  }
+
+  login () {
+    console.log('login pressed');
+    this.props.home();
+    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+      .catch(error => {
+        Alert.alert('One small problem...', error.message)
+      })
+  }
+
+  changeEmail (email) {
+    this.setState({email})
+  }
+
+  changePassword (password) {
+    this.setState({password})
   }
 
   render () {
-    
-    console.log('here');
-    firebaseApp.auth().onAuthStateChanged(user =>{
-      if(!user){
-      console.log('loged out:', user);
-    }
-      else{
-        console.log('loged in as: ', user);
-        this.props.home()
-      }
-    });
-
+    console.log('this.state:', this.state);
+    console.log('this.props:', this.props);
+    console.log('db', db);
+    //let user =  firebase.auth().currentUser;
+    //console.log('user:', user);
+    //this.props.home();
     return (
         <View style={styles.splashContainer}>
           <View style={styles.imgContainer}>
                 {/*<Image source={Images.roses} />*/}
-                <Image source={Images.bachelorette} style={styles.bachelorette} />
-            </View>
-            <View style = {styles.container}>
-            <TextInput style = {styles.input} 
-                        placeholder = "email" 
-                        onChangeText = {(text) => this.setState({email: text})}
-                        /> 
-            <TextInput style = {styles.input} placeholder = "password" secureTextEntry = {true} onChangeText = {(text) => this.setState({password: text})} /> 
-
-            <TouchableHighlight 
-              onPress = {this.onLoginPressed.bind(this)}
-              style = {styles.button}>
-              <Text style = {styles.buttonText}> Log in</Text>
-            </TouchableHighlight>
+                <Image source={Images.bachelor} style={styles.bachelor} />
           </View>
-          {/*<RoundedButton backgroundColor={Colors.facebook} onPress={() => window.alert('How to play')} >
-            How To Play
-          </RoundedButton>*/}
+
+          <View >
+            <TextInput
+              style = {styles.input}
+              onChangeText={this.changeEmail}
+              placeholder='Email'
+            />
+          </View>
+
+          <View >
+            <TextInput
+              style = {styles.input}
+              onChangeText={this.changePassword}
+              placeholder='Password'
+              secureTextEntry
+            />
+          </View>
+
+            <View>
+              <TouchableOpacity style = {styles.button} onPress={this.login} >
+                <Text> Sign In</Text>
+              </TouchableOpacity>
+
+              <View style={styles.links}>
+                <TouchableOpacity style = {styles.button}>
+                  <Text> Forgot Password </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity  style = {styles.button} onPress={this.props.home}>
+                  <Text> Register </Text>
+                </TouchableOpacity>
+            </View>
+          </View>
 
         </View>
-     )
-  }
-
-
-    onLoginPressed(){
-      console.log('attempt to log in with email: ',  this.state.email );
-      let email = this.state.email;
-      let password = this.state.password;
-      console.log('this.props 1:', this.props)
-      let nav = this.props;
-      //createUserWithEmailAndPassword(email, password)
-      Firebase.auth().signInWithEmailAndPassword(email, password).then(
-        function(res){
-          console.log('res:', res);
-          console.log('nav:', nav)
-          nav.home();
-        },
-        function (err){
-        console.log('err: ', err);
-        if(err.code === 'auth/invalid-email'){
-
-        }
-        if(err.code === 'auth/user-disabled'){
-
-        }
-        if(err.code === 'auth/user-not-found'){
-          console.log('create user:', email)//, this.state.email);
-
-          Firebase.auth().createUserWithEmailAndPassword(email, password).then(
-            function(res){
-              console.log('res:', res);
-              console.log('create new user with email:', email)
-            }, 
-            function(err){
-              console.log('err:', err);
-              if(err.code === 'auth/email-already-in-use'){}
-              if(err.code === 'auth/invalid-email'){}
-              if(err.code === 'auth/operation-not-allowed'){}
-              if(err.code === 'auth/weak-password'){}
-            }
-          )
-        }
-        if(err.code === 'auth/wrong-password'){
-
-        }
-      });
-      //this.setState({showProgress: true});
-
-      //var authService = require('./AuthService');
-    /*
-      authService.login({
-        username: this.state.username,
-        password: this.state.password
-      }, (results) =>{
-        this.setState(Object.assign({
-          showProgress: false
-        }, results));
-        if(results.success && this.props.onLogin){
-          this.props.onLogin();
-        }
-      });*/
-   } 
-  }
-
-const mapStateToProps = (state) => {
-  return {
+    )
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    componentExamples: NavigationActions.componentExamples,
-    usageExamples: NavigationActions.usageExamples,
+    //register: NavigationActions.register,
     home: NavigationActions.home,
-    apiTesting: NavigationActions.apiTesting,
-    theme: NavigationActions.theme,
-    deviceInfo: NavigationActions.deviceInfo,
-    //newBracket: NavigationActions.newBracket
-
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PresentationScreen)
+export default connect(null, mapDispatchToProps)(PresentationScreen)

@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import { View, ScrollView, Text, TouchableOpacity, Image } from 'react-native'
+import { View, ScrollView, TextInput,Text, TouchableOpacity, TouchableHighlight, Image } from 'react-native'
 import { connect } from 'react-redux'
 import Actions from '../Actions/Creators'
 import { Colors, Images, Metrics } from '../Themes'
@@ -11,59 +11,37 @@ import * as Animatable from 'react-native-animatable'
 // Enable when you have configured Xcode
 // import PushNotification from 'react-native-push-notification'
 import I18n from '../I18n/I18n.js'
-
+import { db } from '../Config/firebaseConfig.js'
 // Styles
 import styles from './Styles/HomeScreenStyle'
-import * as Firebase from 'firebase';
+import * as firebase from 'firebase';
 
 class HomeScreen extends React.Component {
 
   constructor (props) {
     super(props)
-    this.state = {}
-  }
-
+    console.log('this.props:', this.props);
+    console.log('firebaseConfig:', db);
+      this.state = {
+        userBrackets: [],
+      }
+    }
+  
   static propTypes = {
     loggedIn: PropTypes.bool,
     dispatch: PropTypes.func,
-    temperature: PropTypes.number,
-    city: PropTypes.string,
     login: PropTypes.func,
     logout: PropTypes.func,
-    requestTemperature: PropTypes.func,
     listviewExample: PropTypes.func,
     listviewGridExample: PropTypes.func,
-    mapviewExample: PropTypes.func,
-    newBracket: PropTypes.func,
+    getUserBrackets: PropTypes.func,
   }
 
-  componentWillReceiveProps (nextProps) {
-    // Request push premissions only if the user has logged in.
-    const { loggedIn } = nextProps
-    if (loggedIn) {
-      /*
-      * If you have turned on Push in Xcode, http://i.imgur.com/qFDRhQr.png
-      * uncomment this code below and import at top
-      */
-      // if (__DEV__) console.log('Requesting push notification permissions.')
-      // PushNotification.requestPermissions()
-    }
+  componentDidMount () {
+    let currUser = firebase.auth().currentUser
+    // this.props.getUserBrackets(currUser)
   }
 
-  // fires when we tap the rocket!
-  handlePressRocket = () => {
-    this.props.requestTemperature('Boise')
-  }
-
-  // fires when tap send
-  handlePressSend = () => {
-    this.props.requestTemperature('Toronto')
-  }
-
-  // fires when tap star
-  handlePressStar = () => {
-    this.props.requestTemperature('New Orleans')
-  }
 
   renderLoginButton () {
     return (
@@ -89,81 +67,37 @@ class HomeScreen extends React.Component {
     )
   }
 
-  renderUsageExamples () {
-    const { loggedIn, temperature, city } = this.props
-    return (
-      <View>
-
-      
-        {this.renderHeader(I18n.t('loginLogoutExampleTitle'))}
-        {loggedIn ? this.renderLogoutButton() : this.renderLoginButton()}
-        {this.renderHeader('I18n Locale')}
-        <View style={styles.groupContainer}>
-          <Text style={styles.locale}>{I18n.locale}</Text>
-        </View>
-        {this.renderHeader(I18n.t('api') + `: ${city}`)}
-        <View style={[styles.groupContainer, {height: 50}]}>
-          <Text style={styles.temperature}>{temperature && `${temperature} ${I18n.t('tempIndicator')}`}</Text>
-        </View>
-        {this.renderHeader(I18n.t('rnVectorIcons'))}
-        <View style={styles.groupContainer}>
-          <TouchableOpacity onPress={this.handlePressRocket}>
-            <Icon name='rocket' size={Metrics.icons.medium} color={Colors.ember} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.handlePressSend}>
-            <Icon name='send' size={Metrics.icons.medium} color={Colors.error} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.handlePressStar}>
-            <Icon name='star' size={Metrics.icons.medium} color={Colors.snow} />
-          </TouchableOpacity>
-          <Icon name='trophy' size={Metrics.icons.medium} color={Colors.error} />
-          <Icon name='warning' size={Metrics.icons.medium} color={Colors.ember} />
-        </View>
-        <View style={styles.groupContainer}>
-          <Icon.Button name='facebook' style={styles.facebookButton} backgroundColor={Colors.facebook} onPress={() => window.alert('Facebook')}>
-            {I18n.t('loginWithFacebook')}
-          </Icon.Button>
-        </View>
-        {this.renderHeader(I18n.t('rnAnimatable'))}
-        <View style={styles.groupContainer}>
-          <Animatable.Text animation='fadeIn' iterationCount='infinite' direction='alternate' style={styles.subtitle}>{I18n.t('rnAnimatable')}</Animatable.Text>
-          <Animatable.Image animation='pulse' iterationCount='infinite' source={Images.logo} />
-          <Animatable.View animation='jello' iterationCount='infinite' >
-            <Icon name='cab' size={Metrics.icons.medium} color={Colors.snow} />
-          </Animatable.View>
-        </View>
-        {this.renderHeader(I18n.t('igniteGenerated'))}
-        <View>
-          <RoundedButton text='Listview' onPress={this.props.listviewExample} />
-        </View>
-        <View>
-          <RoundedButton text='Listview Grid' onPress={this.props.listviewGridExample} />
-        </View>
-      </View>
-    )
-  }
-
   render () {
-    console.log('user in home:', Firebase.auth().currentUser)
+    //console.log('user in home:', Firebase.auth().currentUser)
+    console.log('db:', db);
+    let user =  firebase.auth().currentUser;
+    console.log('user:', user);
     return (
       <View style={styles.mainContainer}>
-      <Text>{Firebase.auth().currentUser.email}</Text>
-      <View>
+            <View style={styles.imgContainer}>
+                {/*<Image source={Images.roses} />*/}
+                <Image source={Images.bachelor} style={styles.bachelor} />
+            </View>
+      
+        <View>
           <RoundedButton text='New Bracket' onPress={this.props.newBracket} />
         </View>
         <View>
           <RoundedButton text='My Brackets' onPress={this.props.listviewGridExample} />
         </View>
-        {/*<Image source={Images.background} style={styles.backgroundImage} resizeMode='stretch' />
-        <ScrollView style={styles.container}>
-          <View style={styles.section}>
-            <Text style={styles.sectionText} >
-              The Usage Examples screen is a playground for 3rd party libs and logic proofs.
-              Items on this screen can be composed of multiple components working in concert.  Functionality demos of libs and practices
-            </Text>
-          </View>
-          {this.renderUsageExamples()}
-        </ScrollView>*/}
+        <View style = {styles.container}>
+         <TextInput
+          style={{height: 40, width: 270, borderColor: 'gray', borderWidth: 1, marginRight: 10  }}
+          placeholder = " Search Brackets"
+          onChangeText={(player) => this.setState({player})}
+          value={this.state.player}
+          />
+          <RoundedButton onPress={this.addPlayer}  >
+            {/*}  <Icon name='search' size={Metrics.icons.medium} color={Colors.error} />*/}
+            <Text>Search</Text>
+          </RoundedButton>
+        </View>
+        <Text style={styles.user}>{user}</Text>
       </View>
     )
   }
@@ -172,8 +106,7 @@ class HomeScreen extends React.Component {
 const mapStateToProps = (state) => {
   return {
     loggedIn: state.login.username !== null,
-    temperature: state.weather.temperature,
-    city: state.weather.city
+    /*currUserBrackets: state.userBrackets*/
   }
 }
 
@@ -181,11 +114,12 @@ const mapDispatchToProps = (dispatch) => {
   return {
     login: NavigationActions.login,
     logout: () => dispatch(Actions.logout()),
-    requestTemperature: (city) => dispatch(Actions.requestTemperature(city)),
+    setUserBrackets: (brackets) => dispatch(Actions.setUserBrackets(brackets)),
     listviewExample: NavigationActions.listviewExample,
     listviewGridExample: NavigationActions.listviewGridExample,
-    newBracket: NavigationActions.newBracket,
-    mapviewExample: NavigationActions.mapviewExample
+    getUserBrackets: (currUser) => {
+      dispatch(Actions.getUserBrackets(currUser))
+    }  
   }
 }
 

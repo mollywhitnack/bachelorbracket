@@ -18,11 +18,9 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     alignSelf: 'center',
     color: Colors.snow,
-    textAlign: 'center',
     marginBottom: Metrics.smallMargin
   },
   label: {
-    textAlign: 'center',
     color: Colors.snow
   },
   listContent: {

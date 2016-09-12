@@ -26,15 +26,23 @@ export default StyleSheet.create({
   componentLabel: {
     ...ApplicationStyles.darkLabel
   },
-  temperature: {
-    ...Fonts.style.h4,
-    color: Colors.snow
-  },
   locale: {
     ...Fonts.style.h4,
     color: Colors.snow
   },
   groupContainer: {
     ...ApplicationStyles.groupContainer
+  },
+  plus:{
+  
+  },
+  submit:{
+    //marginTop:100
+  },
+  inline:{
+    flexWrap: 'wrap',   
+    alignItems: 'flex-start',
+    flexDirection:'row',
   }
+
 })

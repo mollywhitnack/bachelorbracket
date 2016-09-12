@@ -5,8 +5,8 @@ export default StyleSheet.create({
   ...ApplicationStyles.screen,
   container: {
     flex: 1,
-    marginTop: 20,
-    backgroundColor: Colors.background
+    marginTop: 14,
+    backgroundColor: 'white'
   },
   header:{
     marginTop: 50,
@@ -16,12 +16,13 @@ export default StyleSheet.create({
     marginTop: 20,
   },
   row: {
-    width: 120,
-    height: 160,
+    width: 160,
+    height: 170,
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 5,
+    margin: 10,
   },
+
   boldLabel: {
     fontWeight: 'bold',
     alignSelf: 'center',
@@ -41,15 +42,17 @@ export default StyleSheet.create({
   },
   image:{
    resizeMode: 'contain',
-   width: 100,
-   height: 110,
+   width: 160,
+   height: 140,
+
   },
   pink:{
     backgroundColor: 'pink'
-
   },
   none:{
-    backgroundColor: 'black'
+    borderRadius: 5,
+    paddingBottom: 10,
+    backgroundColor: 'grey'
   },
 
   overlay: {

@@ -13,7 +13,6 @@ export default StyleSheet.create({
     padding: 6
   },
   loginText: {
-    textAlign: 'center',
     color: Colors.silver
   },
   componentLabelContainer: {
@@ -22,15 +21,37 @@ export default StyleSheet.create({
   componentLabel: {
     ...ApplicationStyles.darkLabel
   },
-  temperature: {
-    ...Fonts.style.h4,
-    color: Colors.snow
-  },
   locale: {
     ...Fonts.style.h4,
     color: Colors.snow
   },
   groupContainer: {
     ...ApplicationStyles.groupContainer
+  },
+  container:{
+    margin: 30,
+    flexWrap: 'wrap',   
+    alignItems: 'flex-start',
+    flexDirection:'row',
+  },
+  imgContainer: {
+    paddingTop: 100,
+    paddingBottom: 50,
+   flexDirection: 'row',
+  },
+  bachelorette:{
+   resizeMode: 'cover',
+   width: null,
+   height: 80,
+   flex:1
+  },
+  bachelor:{
+   resizeMode: 'cover',
+   width: null,
+   height: 100,
+   flex:1
+  },
+  user:{
+    paddingTop: 80,
   }
 })

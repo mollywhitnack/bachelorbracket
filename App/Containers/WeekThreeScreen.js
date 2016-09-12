@@ -1,110 +1,188 @@
+'use strict';
 import React, { PropTypes } from 'react'
-import { View, ScrollView, Text, TouchableOpacity, Image, ListView,TextInput ,TouchableHighlight} from 'react-native'
+import { View, ScrollView, Text, TouchableOpacity, Image, ListView,TextInput ,TouchableHighlight, RecyclerViewBackedScrollView} from 'react-native'
 import { connect } from 'react-redux'
+var update = require('react-addons-update');
 import { Images, Colors } from '../Themes'
 import RoundedButton from '../Components/RoundedButton'
 import { Actions as NavigationActions } from 'react-native-router-flux'
 
-// For empty lists
 import AlertMessage from '../Components/AlertMessageComponent'
 
-// Styles
 import styles from './Styles/WeekOneScreenStyle'
+import * as Firebase from 'firebase';
 
 class WeekThreeScreen extends React.Component {
 
-  constructor (props) {
-    super(props)
-
-    const dataObjects = [
-      {title: '1', description: 'First Description', image: 'http://cdn1.edgedatg.com/aws/v2/abc/TheBachelorette/person/1643372/f57dda0053fbea301812a5d515fd3a16/330x330-Q90_f57dda0053fbea301812a5d515fd3a16.jpg'},
-      {title: '2', description: 'Second Description'},
-      {title: '3', description: 'Third Description'},
-      {title: '4', description: 'Fourth Description'},
-      {title: '5', description: 'Fifth Description'},
-      {title: '6', description: 'Sixth Description'},
-      {title: '7', description: 'Seventh Description'},
-      {title: '8', description: '8 Description'},
-      {title: '9', description: '9 Description'},
-      {title: '10', description: '10 Description'},
-      {title: '11', description: '11 Description'},
-      {title: '12', description: '12 Description'},
-      {title: '13', description: '13 Description'},
-      {title: '14', description: '14 Description'},
-      {title: '15', description: '15 Description'},
-      {title: '16', description: '16 Description'},
-      {title: '17', description: '17 Description'},
-      {title: '18', description: '18 Description'},
-      {title: '19', description: '19 Description'},
-      {title: '20', description: '20 Description'},
-    ]
-
-
-    const rowHasChanged = (r1, r2) => r1 !== r2
-
-    // DataSource configured
-    const ds = new ListView.DataSource({rowHasChanged})
-
-    // Datasource is always in state
-    this.state = {
-      dataSource: ds.cloneWithRows(dataObjects)
-    }
-  }
-
   static propTypes = {
     weekFour: PropTypes.func,
+    weekThreePicks: PropTypes.array,
+    selectContestant: PropTypes.func,
+    bracketId: PropTypes.string
+    }
+  
+  
+  constructor (props) {
+    super(props)
+    console.log('this.props: ', this.props)
+
+    //this._renderRow.bind(this);
+    this._renderRow = this._renderRow.bind(this);
+    this.selectContestant = this.selectContestant.bind(this);
+    this.attemptNextScreen = this.attemptNextScreen.bind(this);
+
+//move this
+    const dataObjects = [
+            {title: '1', added : false , description: 'First Description', image: 'cont1' },
+            {title: '2', added : false, description: 'Second Description', image: 'cont2'},
+            {title: '3', added : false ,description: 'Third Description', image: 'cont3'},
+            {title: '4', added : false, description: 'Fourth Description', image: 'cont4'},
+            {title: '5', added : false, description: 'Fifth Description', image: 'cont5'},
+            {title: '6', added : false, description: 'Sixth Description', image: 'cont6'},
+            {title: '7', added : false, description: 'Seventh Description', image: 'cont7'},
+            {title: '8', added : false, description: '8 Description', image: 'cont8'},
+            {title: '9', added : false, description: '9 Description', image: 'cont9'},
+            {title: '10', added : false, description: '10 Description', image: 'cont10'},
+            {title: '11', added : false, description: '11 Description', image: 'cont11'},
+            {title: '12', added : false, description: '12 Description', image: 'cont12'},
+            {title: '13', added : false, description: '13 Description', image: 'cont13'},
+            {title: '14', added : false, description: '14 Description', image: 'cont14'},
+            {title: '15', added : false, description: '15 Description', image: 'cont15'},
+            {title: '16', added : false, description: '16 Description', image: 'cont16'},
+            {title: '17', added : false, description: '17 Description', image: 'cont17'},
+            {title: '18', added : false, description: '18 Description', image: 'cont18'},
+            {title: '19', added : false, description: '19 Description', image: 'cont19'},
+            {title: '20', added : false, description: '20 Description', image: 'cont20'},
+            {title: '21', added : false, description: '21 Description', image: 'cont21'},
+            {title: '22', added : false, description: '22 Description', image: 'cont22'},
+            {title: '23', added : false, description: '23 Description', image: 'cont23'},
+            {title: '24', added : false, description: '24 Description', image: 'cont24'},
+            {title: '25', added : false, description: '25 Description', image: 'cont25'},
+            {title: '26', added : false, description: '26 Description', image: 'cont26'},
+      ]
+
+    const rowHasChanged = (r1, r2) => r1 !== r2
+    // DataSource configured
+    const ds = new ListView.DataSource({rowHasChanged})
+    // Datasource is always in state
+    this.state = {
+      dataSource: ds.cloneWithRows(dataObjects),
+      weekThreePicks: []
+    }
+
   }
 
-  /* ***********************************************************
-  * STEP 3
-  * `_renderRow` function -How each cell/row should be rendered
-  * It's our best practice to place a single component here:
-  *
-  * e.g.
-    return <MyCustomCell title={rowData.title} description={rowData.description} />
-  *************************************************************/
+  _onHideUnderlay(){
+    console.log('hide: ', this);
+  }
+
   _renderRow (rowData) {
+    let highlight  = 'none'
     return (
       <View style={styles.row}>
-        <TouchableOpacity onPress = {this.selectContestant}>
-          <View>
+        <TouchableOpacity onPress={() => {
+            this.selectContestant(rowData);
+          }
+        }>
+          <View style={styles[highlight]} >
             <Text style={styles.boldLabel}>{rowData.title}</Text>
-            <Image style={styles.image}  source={Images.jojo} /> 
+            <Image style={styles.image}  source={Images[rowData.image]} /> 
           </View>
         </TouchableOpacity>
       </View>
     )
   }
 
+  selectContestant(contestant){
+    //this.props.requestTemperature('Toronto')
+    console.log('clicked:', contestant);
+    console.log('this.state:', this.state)
+    console.log('this.props:', this.props)
+    contestant.added = !contestant.added
+    if(contestant.added){
+      contestant.added = true;
+      this.setState({weekThreePicks: this.state.weekThreePicks.concat([contestant.title])});
+    }
+    else{
+      for(let i =0; i<this.state.weekThreePicks.length; i++){
+        if(this.state.weekThreePicks[i] === contestant.title){
+          this.setState({
+            weekThreePicks: update(this.state.weekThreePicks, {$splice: [[i, 1]]})
+          })
+        }
+      }
+    }
+
+  }
+
   _noRowData () {
     return this.state.dataSource.getRowCount() === 0
   }
 
+  attemptNextScreen () {
+    if(this.state.weekThreePicks.length >= 4){
+      //write to databse
+      let currbracket = '-KQafDdpleLD1sxKH2wd'
+      let uid  = Firebase.auth().currentUser.v
+      firebase.database().ref('brackets/' + currbracket + `/${uid}`).child('weekThreePicks').set({
+        0 : this.state.weekThreePicks[0],
+        1 : this.state.weekThreePicks[1],
+        2 : this.state.weekThreePicks[2],
+        3 : this.state.weekThreePicks[3],
+      })
+
+      this.props.weekFour
+();
+    }
+    else{
+      //alert here
+      console.log('please select 4 contestants')
+    }
+  }
+
   render () {
+    console.log('this.state.weekone:', this.state.weekOnePick)
+    console.log('this in render', this)
+
     return (
-      <View>
-        <Text>Week 1</Text>
-        <Text>Select 15</Text>
-          <ScrollView style={styles.container} >
-            <View >
-              <ListView
-              contentContainerStyle={styles.listContent}
-              dataSource={this.state.dataSource}
-              renderRow={this._renderRow}
-              />
-            </View>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Week 3</Text>
+          <Text  style={styles.subtitle}>Select 15... {this.state.weekThreePicks.length}/15</Text>
+        </View>
+        <ScrollView style={styles.scroll}>
+          <ListView
+            removeClippedSubviews = {false}
+            contentContainerStyle={styles.listContent}
+            dataSource={this.state.dataSource}
+            renderRow={this._renderRow}
+            renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
+          />
         </ScrollView>
-      <RoundedButton text='Week 4 ->' onPress={this.props.weekFour} />
+        <RoundedButton text='Week 4 ->' onPress={this.attemptNextScreen} />
       </View>
     )
   }
 }
 
+/*WeekOneScreen.propTypes = {
+  text: PropTypes.string.isRequired,
+};*/
 
 const mapStateToProps = (state) => {
   return {
     weekFour: NavigationActions.weekFour
+   // weekOnePicks: NavigationActions.weekTwo
     // ...redux state to props here
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: NavigationActions.login,
+    logout: () => dispatch(Actions.logout()),
+    listviewExample: NavigationActions.listviewExample,
+    listviewGridExample: NavigationActions.listviewGridExample,
   }
 }
 

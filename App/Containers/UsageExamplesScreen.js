@@ -25,14 +25,10 @@ class UsageExamplesScreen extends React.Component {
   static propTypes = {
     loggedIn: PropTypes.bool,
     dispatch: PropTypes.func,
-    temperature: PropTypes.number,
-    city: PropTypes.string,
     login: PropTypes.func,
     logout: PropTypes.func,
-    requestTemperature: PropTypes.func,
     listviewExample: PropTypes.func,
     listviewGridExample: PropTypes.func,
-    mapviewExample: PropTypes.func
   }
 
   componentWillReceiveProps (nextProps) {
@@ -48,20 +44,6 @@ class UsageExamplesScreen extends React.Component {
     }
   }
 
-  // fires when we tap the rocket!
-  handlePressRocket = () => {
-    this.props.requestTemperature('Boise')
-  }
-
-  // fires when tap send
-  handlePressSend = () => {
-    this.props.requestTemperature('Toronto')
-  }
-
-  // fires when tap star
-  handlePressStar = () => {
-    this.props.requestTemperature('New Orleans')
-  }
 
   renderLoginButton () {
     return (
@@ -89,7 +71,7 @@ class UsageExamplesScreen extends React.Component {
   }
 
   renderUsageExamples () {
-    const { loggedIn, temperature, city } = this.props
+    const { loggedIn } = this.props
     return (
       <View>
         {/*{this.renderHeader(I18n.t('loginLogoutExampleTitle'))}
@@ -161,8 +143,6 @@ class UsageExamplesScreen extends React.Component {
 const mapStateToProps = (state) => {
   return {
     loggedIn: state.login.username !== null,
-    temperature: state.weather.temperature,
-    city: state.weather.city
   }
 }
 
@@ -170,10 +150,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     login: NavigationActions.login,
     logout: () => dispatch(Actions.logout()),
-    requestTemperature: (city) => dispatch(Actions.requestTemperature(city)),
     listviewExample: NavigationActions.listviewExample,
     listviewGridExample: NavigationActions.listviewGridExample,
-    mapviewExample: NavigationActions.mapviewExample
   }
 }
 

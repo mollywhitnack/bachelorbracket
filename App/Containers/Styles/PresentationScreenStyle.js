@@ -9,14 +9,15 @@ export default StyleSheet.create({
     resizeMode: 'contain'
   },
   splashContainer:{
-    paddingTop: 200
+    paddingTop: 200,
+    padding: 20
   },
   centered: {
     alignItems: 'center'
   },  
   imgContainer: {
    flexDirection: 'row',
-   flex:1
+   flex:1,
   },
   roses: {
     justifyContent: 'center',
@@ -27,6 +28,12 @@ export default StyleSheet.create({
     flex:1
   },
   bachelorette:{
+   resizeMode: 'cover',
+   width: null,
+   height: 100,
+   flex:1
+  },
+  bachelor:{
    resizeMode: 'cover',
    width: null,
    height: 100,

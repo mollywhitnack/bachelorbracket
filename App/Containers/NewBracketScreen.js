@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 import { View, ScrollView, Text, TouchableOpacity, Image, TextInput ,TouchableHighlight} from 'react-native'
 import { connect } from 'react-redux'
 import Actions from '../Actions/Creators'
+import { bindActionCreators } from 'redux';
 import { Colors, Images, Metrics } from '../Themes'
 import RoundedButton from '../Components/RoundedButton'
 import { Actions as NavigationActions } from 'react-native-router-flux'
@@ -20,24 +21,22 @@ class NewBracketScreen extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      inviteEmails: []
+      inviteEmails: [],
+      bracketId: ''
     }
   }
 
   static propTypes = {
     loggedIn: PropTypes.bool,
     dispatch: PropTypes.func,
-    temperature: PropTypes.number,
     player: PropTypes.string,
     inviteEmails: PropTypes.array,
-    city: PropTypes.string,
     login: PropTypes.func,
     logout: PropTypes.func,
-    requestTemperature: PropTypes.func,
     listviewExample: PropTypes.func,
     listviewGridExample: PropTypes.func,
-    mapviewExample: PropTypes.func,
-    weekOne: PropTypes.func
+    weekOne: PropTypes.func,
+    bracketId: PropTypes.string
   }
 
   componentWillReceiveProps (nextProps) {
@@ -47,12 +46,6 @@ class NewBracketScreen extends React.Component {
     }
   }
 
-  // fires when we tap the rocket!
-  handlePressRocket = () => {
-    this.props.requestTemperature('Boise')
-  }
-
-  // fires when tap send
   addPlayer = () => {
     //this.props.requestTemperature('Toronto')
     console.log('this.state:', this.state)
@@ -60,11 +53,6 @@ class NewBracketScreen extends React.Component {
     //might be wrong? ''
     this.setState({player: '' })
 
-  }
-
-  // fires when tap star
-  handlePressStar = () => {
-    this.props.requestTemperature('New Orleans')
   }
 
   renderLoginButton () {
@@ -102,19 +90,21 @@ class NewBracketScreen extends React.Component {
         onChangeText={(BracketName) => this.setState({BracketName})}
         value={this.state.BracketName}
         />
-        <Text>Invite Friends to bracket by Email</Text>
-        <TextInput
-        style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-        placeholder = "Player"
-        onChangeText={(player) => this.setState({player})}
-        value={this.state.player}
-        />
+        <Text style = {{paddingTop: 30}}>Invite Friends to bracket by Email</Text>
+        <View style = {styles.inline}>
+          <TextInput
+          style={{height: 40, width: 320, borderColor: 'gray', borderWidth: 1, marginRight: 10  }}
+          placeholder = "Player"
+          onChangeText={(player) => this.setState({player})}
+          value={this.state.player}
+          />
 
-        <TouchableOpacity onPress={this.addPlayer}>
-            <Icon name='plus' size={Metrics.icons.medium} color={Colors.error} />
+          <TouchableOpacity onPress={this.addPlayer}  >
+              <Icon name='plus' size={Metrics.icons.medium} color={Colors.error} />
           </TouchableOpacity>
+        </View>
         <Text>{this.state.inviteEmails}</Text>
-        <RoundedButton text='Submit Bracket' onPress={this.writeUserData.bind(this)}/>
+        <RoundedButton text='Submit Bracket' onPress={this.writeUserData.bind(this)} style = {styles.submit}/>
         </ScrollView>
       </View>
     )
@@ -146,19 +136,15 @@ class NewBracketScreen extends React.Component {
 
       var updates = {};
       updates['/brackets/' + newBracketKey] = newBracket;
-      //var brackets = [];
-      /*firebase.database().ref('brackets/' + currbracket).child(`${uid}`).set({
-        weekOne: this.state.weekOne
-      })*/
 
       firebase.database().ref(`${uid}/${newBracketKey}`).set({
         name: newName,
         inviteEmails: newInvites,
       })
 
-      //updates['/user-brackets/' + uid ] = newUserBracket;
       console.log('ref updates:', firebase.database().ref().update(updates))
-      
+      //dispatch current bracket id on component did mount?
+      this.setState({bracketId: newBracketKey})
       this.props.weekOne();
   }
 
@@ -168,19 +154,17 @@ class NewBracketScreen extends React.Component {
 const mapStateToProps = (state) => {
   return {
     loggedIn: state.login.username !== null,
-    temperature: state.weather.temperature,
-    city: state.weather.city
+    bracketId: state.bracketId
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    //actions: bindActionCreators(bracketActions, dispatch),
     login: NavigationActions.login,
     logout: () => dispatch(Actions.logout()),
-    requestTemperature: (city) => dispatch(Actions.requestTemperature(city)),
     listviewExample: NavigationActions.listviewExample,
     listviewGridExample: NavigationActions.listviewGridExample,
-    mapviewExample: NavigationActions.mapviewExample,
     weekOne: NavigationActions.weekOne
   }
 }

@@ -13,20 +13,18 @@ const logout = () => ({ type: Types.LOGOUT })
 
 const startup = () => ({ type: Types.STARTUP })
 
-const requestTemperature = (city) => ({ type: Types.TEMPERATURE_REQUEST, city })
-const receiveTemperature = (temperature) => ({ type: Types.TEMPERATURE_RECEIVE, temperature })
-const receiveTemperatureFailure = () => ({ type: Types.TEMPERATURE_FAILURE })
+const getUserBrackets = (currUser) =>{
+  return ({
+    currUser,
+    type: Types.GET_USER_BRACKETS
+  })
+}
 
-/**
- Makes available all the action creators we've created.
- */
 export default {
+  getUserBrackets,
   attemptLogin,
   loginSuccess,
   loginFailure,
   logout,
   startup,
-  requestTemperature,
-  receiveTemperature,
-  receiveTemperatureFailure
 }
