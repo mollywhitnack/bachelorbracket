@@ -3,8 +3,8 @@ import { Alert } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions as NavigationActions } from 'react-native-router-flux'
 import firebase from 'firebase'
-import { db } from '../Config/FirebaseConfig'
-import { Container, Header, Button, Title, Content, Input, InputGroup, Icon } from 'native-base'
+import { db } from '../Config/firebaseConfig'
+//import { Container, Header, Button, Title, Content, Input, InputGroup, Icon } from 'native-base'
 
 // Styles
 import styles from './Styles/PresentationScreenStyle'
@@ -35,7 +35,7 @@ class RegisterScreen extends React.Component {
 
   register () {
     this.setState({ submitted: true })
-    if (this.state.password === this.state.passwordConfirmation) {
+    //if (this.state.password === this.state.passwordConfirmation) {
       firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
         .then(user => {
           user.updateProfile({ displayName: this.state.displayName })
@@ -50,10 +50,10 @@ class RegisterScreen extends React.Component {
           this.setState({ submitted: false })
           Alert.alert('One small problem...', error.message)
         })
-    } else {
+   /* } else {
       this.setState({ submitted: false })
       Alert.alert('Error', 'Passwords don\'t match')
-    }
+    }*/
   }
 
   changeEmail (email) {
@@ -74,7 +74,7 @@ class RegisterScreen extends React.Component {
 
   render () {
     return (
-      <Container>
+      {/*<Container>
         <Header>
           <Title> Register</Title>
         </Header>
@@ -121,7 +121,7 @@ class RegisterScreen extends React.Component {
             Back to Login <Icon name='ios-arrow-back' />
           </Button>
         </Content>
-      </Container>
+      </Container>*/}
     )
   }
 }

@@ -26,6 +26,8 @@ import WeekSixScreen from '../Containers/WeekSixScreen'
 import WeekSevenScreen from '../Containers/WeekSevenScreen'
 import WeekEightScreen from '../Containers/WeekEightScreen'
 import BracketScreen from '../Containers/BracketScreen'
+import RegisterScreen from '../Containers/RegisterScreen'
+import UserBracketsScreen from '../Containers/UserBracketsScreen'
 
 /* **************************
 * Documentation: https://github.com/aksonov/react-native-router-flux
@@ -39,6 +41,9 @@ class NavigationRouter extends Component {
           <Scene key='drawerChildrenWrapper' navigationBarStyle={Styles.navBar} titleStyle={Styles.title} leftButtonIconStyle={Styles.leftButton} rightButtonTextStyle={Styles.rightButton}>
             <Scene initial key='presentationScreen' component={PresentationScreen} title='Ignite' renderLeftButton={NavItems.hamburgerButton} />
             <Scene key='componentExamples' component={AllComponentsScreen} title='Components' />
+            <Scene key='login' component={LoginScreen} title='Login' hideNavBar />
+            <Scene key='register' component={RegisterScreen} title='Register' />
+            <Scene key='userBrackets' component={UserBracketsScreen} title='UserBrackets' />
             <Scene key='usageExamples' component={UsageExamplesScreen} title='Usage' rightTitle='Example' onRight={() => window.alert('Example Pressed')} />
             <Scene key='home' component={HomeScreen} title='Home' rightTitle='Example' />
             <Scene key='newBracket' component={NewBracketScreen} title='NewBracket' />
@@ -51,7 +56,6 @@ class NavigationRouter extends Component {
             <Scene key='weekSix' component={WeekSixScreen} title='WeekSix' />
             <Scene key='weekSeven' component={WeekSevenScreen} title='WeekSeven' />
             <Scene key='weekEight' component={WeekEightScreen} title='WeekEight' />
-            <Scene key='login' component={LoginScreen} title='Login' hideNavBar />
             <Scene key='listviewExample' component={ListviewExample} title='Listview Example' />
             <Scene key='listviewGridExample' component={ListviewGridExample} title='Listview Grid' />
             <Scene key='mapviewExample' component={MapviewExample} title='Mapview Example' />

@@ -22,8 +22,8 @@ let firebaseRef = db.ref('brackets')
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
     setUserBracketsListener(user);
-    console.log('loged in, going home');
-    NavigationActions.home()
+    console.log('loged in, going home:', user.email);
+    //NavigationActions.home()
   } else {
     dispatch({type: Types.LOGOUT})
     NavigationActions.presentationScreen()
@@ -32,6 +32,7 @@ firebase.auth().onAuthStateChanged(user => {
 
 function setUserBracketsListener(user) {
   let uid  = user.uid;//firebase.auth().currentUser.v
+  console.log('uid:', uid);
     var data = db.ref(`${uid}`);
     data.on('value', function(snapshot){
       console.log('Getting brackets');

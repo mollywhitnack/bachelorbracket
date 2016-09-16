@@ -13,18 +13,41 @@ const logout = () => ({ type: Types.LOGOUT })
 
 const startup = () => ({ type: Types.STARTUP })
 
-const getUserBrackets = (currUser) =>{
+//for user brackets screen
+const userBracketsRequest = (currUser) =>{
+  console.log('in get user brackets in actions for :', currUser);
   return ({
     currUser,
-    type: Types.GET_USER_BRACKETS
+    type: Types.USER_BRACKETS_REQUEST
   })
 }
 
+
+const receiveBrackets = (brackets) => ({
+  type: Types.BRACKETS_RECIEVE,
+  brackets
+})
+
+const selectBracket = (bracket) => ({
+  bracket,
+  type: Types.SELECT_BRACKET_FOR_DETAILS
+})
+
+/*const bracketsRequest = (currUser) => {
+  return ({
+    currUser,
+    type: Types.BRACKETS_REQUEST
+  })
+}*/
+
+
 export default {
-  getUserBrackets,
+  userBracketsRequest,
+  receiveBrackets,
   attemptLogin,
   loginSuccess,
   loginFailure,
   logout,
   startup,
+  selectBracket,
 }

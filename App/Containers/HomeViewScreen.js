@@ -35,6 +35,8 @@ class HomeScreen extends React.Component {
     listviewExample: PropTypes.func,
     listviewGridExample: PropTypes.func,
     getUserBrackets: PropTypes.func,
+    newBracket: PropTypes.func,
+    userBrackets: PropTypes.func
   }
 
   componentDidMount () {
@@ -83,7 +85,7 @@ class HomeScreen extends React.Component {
           <RoundedButton text='New Bracket' onPress={this.props.newBracket} />
         </View>
         <View>
-          <RoundedButton text='My Brackets' onPress={this.props.listviewGridExample} />
+          <RoundedButton text='My Brackets' onPress={this.props.userBrackets} />
         </View>
         <View style = {styles.container}>
          <TextInput
@@ -97,7 +99,7 @@ class HomeScreen extends React.Component {
             <Text>Search</Text>
           </RoundedButton>
         </View>
-        <Text style={styles.user}>{user}</Text>
+        <Text style={styles.user}>user</Text>
       </View>
     )
   }
@@ -117,6 +119,8 @@ const mapDispatchToProps = (dispatch) => {
     setUserBrackets: (brackets) => dispatch(Actions.setUserBrackets(brackets)),
     listviewExample: NavigationActions.listviewExample,
     listviewGridExample: NavigationActions.listviewGridExample,
+    newBracket: NavigationActions.newBracket,
+    userBrackets: NavigationActions.userBrackets,
     getUserBrackets: (currUser) => {
       dispatch(Actions.getUserBrackets(currUser))
     }  

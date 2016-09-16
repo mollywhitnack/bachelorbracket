@@ -18,6 +18,7 @@ class PresentationScreen extends React.Component {
 
   static propTypes = {
     home: PropTypes.func,
+    register: PropTypes.func,
   }
 
   constructor (props) {
@@ -31,19 +32,49 @@ class PresentationScreen extends React.Component {
     this.changeEmail = this.changeEmail.bind(this)
     this.changePassword = this.changePassword.bind(this)
     this.login = this.login.bind(this)
-    this.props.home();
+    this.register = this.register.bind(this)
+    //this.props.home();
   }
 
   login () {
     console.log('login pressed');
-    this.props.home();
+    //this.props.home();
     firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-      .catch(error => {
+    .then(user => {
+         console.log('success');
+         this.props.home();
+    })
+    .catch(error => {
         Alert.alert('One small problem...', error.message)
-      })
+    })
   }
 
+  register () {
+    //this.setState({ submitted: true })
+    /*if (this.state.password === this.state.passwordConfirmation) {*/
+      firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+        .then(user => {
+          this.props.home();
+          //user.updateProfile({ displayName: this.state.displayName })
+          //let userToAdd = {}
+          //userToAdd.displayName = this.state.displayName
+          //userToAdd.currentKarma = 30
+          //userToAdd.totalKarma = 30
+          //let ref = db.ref(`users/${user.uid}`)
+          //ref.set(userToAdd)
+        })
+        .catch(error => {
+          this.setState({ submitted: false })
+          Alert.alert('One small problem...', error.message)
+        })
+    } /*else {
+      this.setState({ submitted: false })
+      Alert.alert('Error', 'Passwords don\'t match')
+    }*/
+  
+
   changeEmail (email) {
+    console.log('email:', email);
     this.setState({email})
   }
 
@@ -54,6 +85,7 @@ class PresentationScreen extends React.Component {
   render () {
     console.log('this.state:', this.state);
     console.log('this.props:', this.props);
+    console.log('firebase:', firebase.auth());
     console.log('db', db);
     //let user =  firebase.auth().currentUser;
     //console.log('user:', user);
@@ -92,7 +124,7 @@ class PresentationScreen extends React.Component {
                   <Text> Forgot Password </Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity  style = {styles.button} onPress={this.props.home}>
+                <TouchableOpacity  style = {styles.button} onPress={this.register}>
                   <Text> Register </Text>
                 </TouchableOpacity>
             </View>
@@ -107,6 +139,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     //register: NavigationActions.register,
     home: NavigationActions.home,
+    register: NavigationActions.register,
   }
 }
 
