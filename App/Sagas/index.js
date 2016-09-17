@@ -4,6 +4,7 @@ import FixtureAPI from '../Services/FixtureApi'
 import { watchStartup } from './StartupSaga'
 import { watchLoginAttempt } from './LoginSaga'
 import DebugSettings from '../Config/DebugSettings'
+import setUserBrackets from './BracketSaga'
 
 // Create our API at this level and feed it into
 // the sagas that are expected to make API calls
@@ -15,4 +16,5 @@ const api = DebugSettings.useFixtures ? FixtureAPI : API.create()
 export default function * root () {
   yield fork(watchStartup)
   yield fork(watchLoginAttempt)
+  yield fork(setUserBrackets().watcher)
 }

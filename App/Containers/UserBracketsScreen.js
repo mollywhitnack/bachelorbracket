@@ -29,8 +29,11 @@ class UserBracketsScreen extends React.Component {
 
   componentDidMount () {
     let currUser = firebase.auth().currentUser.uid
+    let uid  = firebase.auth().currentUser.v
+
     console.log('currUser:', currUser);
-    this.props.getBrackets(currUser)
+    console.log('uid:', uid);
+    this.props.getBrackets(uid)
   }
 
   componentWillReceiveProps (nextProps) {
